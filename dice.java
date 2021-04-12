@@ -1,32 +1,23 @@
 public class dice{
 
-    public static int diceThrow_Memo(int sr, int N, int[] dp){
-        if(sr==N) 
-            return dp[sr]=1;
-
-        if(dp[sr]!=0) 
-            return dp[sr]; 
-
-       int count=0;
-       for(int dice=1;dice<=6&&sr+dice<=N;dice++){
-           count+=diceThrow_Memo(sr+dice,N,dp);
-       }
-       return dp[sr]=count;
-    }
-
-    public static void diceThrow(){
-        int n=10;
-        int[] dp=new int[n+1];
-        for(int i=0;i<n;i++){
-            dp[i]=0;
+    public static long printFriendsPairing(String str, String ans){
+        if(str.length()==0){
+            System.out.println(ans);
+            return 1;
         }
-        System.out.print(diceThrow_Memo(0,n,dp));
-        for(int i=0;i<=n;i++){
-            System.out.println(dp[i]);
+
+        int count=0;
+        char ch = str.charAt(0);
+        count+=printFriendsPairing(str.substring(1),ans+ch+" ");
+
+        for(int i=1;i<str.length();i++){
+            String rstr = str.substring(1,i)+str.substring(i+1);
+            count+=printFriendsPairing(rstr, ans+ch+str.charAt(i)+" ");
         }
+        return count;
     }
 
     public static void main(String[] args){
-        diceThrow();
+        System.out.println(printFriendsPairing("ABCDE",""));
     }
 }
