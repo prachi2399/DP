@@ -139,6 +139,7 @@ public class l001{
         }
        return dp[SR][SC]; 
     }
+    
     public static void mazePath(){
         int n=5;
         int m=5;
