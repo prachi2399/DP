@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 public class l001{
  
     public static int fib_01(int n, int[] dp){
@@ -187,7 +188,7 @@ public class l001{
 
         list.addFirst(1);
         list.addFirst(1);
-        for(sp=ep;sp>=0;sp--){
+        for(int sp=N;sp>=0;sp--){
             if(list.size()<=6){
                 list.addFirst(list.getFirst()*2);
             }
@@ -234,7 +235,7 @@ public class l001{
     }
 
 
-    public int minCost_Memo(int N, int[] cost, int[] dp){
+    public int minCost_Memo(int n, int[] cost, int[] dp){
         if(n<=1) return dp[n]=1;
         
         if(dp[n]!=0) return dp[n];
@@ -264,8 +265,10 @@ public class l001{
     }
 
     public int minCostClimbingStairs(int N, int[] cost) {
+        int n = cost.length;
         int a=cost[0];
         int b=cost[1];
+
         for(int i=2;i<n;i++){
             int minCost=Math.min(a,b)+cost[i];
             a=b;
@@ -319,6 +322,7 @@ public class l001{
             count+=printFriendsPairing(rstr,ans+ch+str.charAt(i)+" ");
         }
         return count;
+
     }
 
     public static long countFriendsPairings(int n) 
@@ -329,11 +333,8 @@ public class l001{
    
     }
 
-    public static long 
-   
-
     public static int goldMine_memo(int r, int c, int[][]mat, int[][] dp, int[][] dir){
-        if(c==mat[0].length-1){
+        if(c == mat[0].length-1){
             return dp[r][c]=mat[r][c];
         }
 
@@ -367,7 +368,7 @@ public class l001{
                     if(x>=0&&x<mat.length)
                        maxGold=Math.max(maxGold,dp[x][y]);//goldMine_memo(x,y,mat,dp,dir));
                 }
-                dp[r][c]=maxgold+mat[r][c];
+                dp[r][c]=maxGold+mat[r][c];
             }
         }
         int maxGold=0;
@@ -383,7 +384,8 @@ public class l001{
         for (int[] d : dp)
             Arrays.fill(d, -1);
 
-        int[][] dir = { { -1, 1 }, { 0, 1 }, { 1, 1 } };
+        int[][] dir = new int[3][2];
+        dir = { { -1, 1 }, { 0, 1 }, { 1, 1 } };
 
         int maxGold = 0;
         for (int i = 0; i < mat.length; i++) {
@@ -392,16 +394,16 @@ public class l001{
 
         System.out.println(goldMine_dp(mat, dp, dir));
         print2D(dp);
-        // System.out.println(maxGold);
+        System.out.println(maxGold);
     }
 
     public int numDecodings(String s) {
         
         int[] dp=new int[s.length() + 1];
         
-        Arrays.fill(dp, -1);
+        //Arrays.fill(dp, -1);
         
-        return numDecodings(s,0,dp);
+        return numDecodings_DP(s,0,dp);
     }
 
     public int numDecodings_MEMO(String s, int i, int[] dp) {
@@ -484,14 +486,14 @@ public class l001{
 }
 
     // numdecoding 2
-    public int numDecodings(String s) {
+    public int numDecodings1(String s) {
         if(s.length()==0) return 0;
         long[] dp=new long[s.length()+1];
-        Arrays.fill(dp,-1);
-        long ans=numDecoding(s,0,dp);
+        //Arrays.fill(dp,-1);
+        long ans=numDecodings_DP(s,0,dp);
         return (int)ans;
     }
-    int mod=(int)1e9+7;
+    //int mod=(int)1e9+7;
     
     public long numDecoding2_Memo(String s, int i, long[] dp){
         if(i==s.length()) {
@@ -547,11 +549,10 @@ public class l001{
 
 public int numWaysToDivideinK(int n, int k, int[][] dp){
 if(k==1||n==k){
-    return dp[n][k]=1
+    return dp[n][k]=1;
 }
 
-int uniqueGroup=numWaysToDivideinK(n-1,k-1);
-
+int uniqueGroup=numWaysToDivideinK(n-1,k-1,dp);
 
 }
 
@@ -611,7 +612,7 @@ dp[i]=count;
  return dp[I];
 }
 
-    int mod=(int)1e9+7;
+    //int mod=(int)1e9+7;
     public int numDecodings2_Opti(String s) {
         long a=1,b=0;
        for(int i=s.length()-1;i>=0;i--) 
@@ -682,8 +683,9 @@ a=count;
             }
         }
         return dp[N][M];
+
     }
-}
+
 
     public static void main(String[] args) {
         // fibo();
@@ -691,7 +693,8 @@ a=count;
         // boardPath();
         // climbStairs(10);
         // countFriendsPairings(10);
-        goldMine();
+        printFriendsPairing("ABCDE","");
+        //goldMine();
     }
 
 }
