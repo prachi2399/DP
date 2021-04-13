@@ -547,15 +547,6 @@ public class l001{
         return dp[i]=count;
 }
 
-public int numWaysToDivideinK(int n, int k, int[][] dp){
-if(k==1||n==k){
-    return dp[n][k]=1;
-}
-
-int uniqueGroup=numWaysToDivideinK(n-1,k-1,dp);
-
-}
-
 public long numDecodin2_Dp(String s, int I, long[] dp){
     for(int i=s.length();i>=0;i--) 
     {if(i==s.length()) {
@@ -615,54 +606,69 @@ dp[i]=count;
     //int mod=(int)1e9+7;
     public int numDecodings2_Opti(String s) {
         long a=1,b=0;
-       for(int i=s.length()-1;i>=0;i--) 
-    {     
-    long count=0;
+       for(int i=s.length()-1;i>=0;i--) {     
+           long count=0;
      
-    char ch1=s.charAt(i);
-     if(ch1=='0'){
-         count=0;
-     }
-     else if(ch1=='*'){
-        count = (count+9*a)%mod;
-        if(i<s.length()-1){
-            char ch2=s.charAt(i+1);
-            if(ch2=='*'){
-                count = (count+15*b)%mod;
+           char ch1=s.charAt(i);
+           if(ch1=='0'){
+               count=0;
             }
-            else if(ch2>='0'&&ch2<='6'){
-                count = (count+2*b)%mod;
-            }
-            else if(ch2>'6'){
-                count = (count+b)%mod;
-            }
-        } 
-    }
-    else{
-        count = (count+a) %mod;
-        if(i<s.length()-1){
-            char ch2=s.charAt(i+1);
-            if(ch2!='*'){
-            int num=(ch1-'0')*10+(ch2-'0');
+            else if(ch1=='*'){
+                count = (count+9*a)%mod;
+                if(i<s.length()-1){
+                    char ch2=s.charAt(i+1);
+                    if(ch2=='*'){
+                        count = (count+15*b)%mod;
+                    }
+                    else if(ch2>='0'&&ch2<='6'){
+                        count = (count+2*b)%mod;
+                    }
+                    else if(ch2>'6'){
+                    count = (count+b)%mod;
+                }
+            } 
+        }
+        else{
+            count = (count+a) %mod;
+            if(i<s.length()-1){
+                char ch2=s.charAt(i+1);
+                if(ch2!='*'){
+                    int num=(ch1-'0')*10+(ch2-'0');
          
-            if(num<=26) {
-            count = (count+b)%mod;
-        }
-    }
-        else {
-            if(ch1=='1'){
-                count = (count+9*b)%mod;
-            } else if(ch1=='2'){
-                count = (count+6*b)%mod;
+                    if(num<=26) {
+                        count = (count+b)%mod;
+                    }
+                }
+                else {
+                    if(ch1=='1'){
+                        count = (count+9*b)%mod;
+                    }    
+                    else if(ch1=='2'){
+                        count = (count+6*b)%mod;
+                    }
+                }
             }
         }
     }
-}
-b=a;
-a=count;
-}
+    b=a;
+    a=count;
     return (int)a;
 }
+
+    public int numWaysToDivideinK(int n, int k, int[][] dp){
+        if(k==1||n==k){
+            return dp[n][k]=1;
+        }
+        int uniqueGroup=numWaysToDivideinK(n-1,k-1,dp);
+        int partOfGroup=numWaysToDivideinK(n-1,k,dp)*k;
+
+        return dp[n][k] = uniqueGroup + partOfGroup;
+    }
+
+    public int numWaysToDivideinK(int n, int k){
+        int[][] dp=new int[n][k];
+        return numWaysToDivideinK(n,k,dp);
+    }
 
     public int maxUncrossedLines(int[] A, int[] B) {
         int N=A.length;
