@@ -32,9 +32,8 @@ public class l005_cutType{
 
     public static int mcm_dp(int[] arr, int SI, int EI, int[][] dp){
 
-        int n=arr.length;
-        for(int gap=2;gap<n;gap++){
-            for(int si=0,ei=gap;ei<n;si++,ei++){
+        for(int gap=0;gap<arr.length;gap++){
+            for(int si=0;ei=gap;ei<arr.length;si++,ei++){
                 if(si+1==ei){
                     dp[si][ei]=0;
                     continue;
@@ -42,8 +41,8 @@ public class l005_cutType{
         
                 int minAns=(int)1e9;
                 for(int cut=si+1;cut<ei;cut++){
-                    int lans=dp[si][cut];
-                    int rans=dp[cut][ei];
+                    int lans=dp[si][cut];//mcm_memo(arr,si,cut,dp);
+                    int rans=dp[cut][ei];//mcm_memo(arr,cut,ei,dp);
         
                     minAns=Math.min(minAns,lans+arr[si]*arr[cut]*arr[ei]+rans);
                 }
@@ -94,6 +93,7 @@ public class l005_cutType{
             this.minExpression=minExpression;
         }
     }
+
     public static pair mcm_memoString(int[] arr,String [] mat, int si, int ei, pair[][] dp){
         if(si+1==ei){
             return dp[si][ei] = new pair(0,mat[si]+"");
@@ -111,6 +111,7 @@ public class l005_cutType{
         }
         return dp[si][ei]=minAns;
     }
+
     public static void matrixMultiplication()
     {
         int[] arr = { 40, 20, 30, 10, 30 };
@@ -122,7 +123,7 @@ public class l005_cutType{
         System.out.println(mcm_memoString(arr, mat, 0, n - 1, dp));
         //print2D(dp);
     }
-
+    // min max value of expression
     public static class Pair{
         int minValue=(int)1e9;
         int maxValue=-(int)1e9;
