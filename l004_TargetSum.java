@@ -263,6 +263,8 @@ public class l004_TargetSum{
         return dp[N][Tar];
     }  
     
+    // 494 leetcode
+    
     public static void main(String[] args){
         //coinChnage();
         //numberOfSolution();
