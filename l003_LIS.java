@@ -169,12 +169,12 @@ public class l003_LIS{
     // 673
     public int findNumberOfLIS(int[] arr) {
         
-        int n=arr.length;
-        int[] len=new int[n];
-        int[] count=new int[n];
+        int n = arr.length;
+        int[] len = new int[n];
+        int[] count = new int[n];
         
-        int maxLen=0;
-        int maxCount=0;
+        int maxLen = 0;
+        int maxCount = 0;
         
         for(int i=0;i<n;i++){
             len[i]=1;
