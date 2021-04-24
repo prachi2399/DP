@@ -215,7 +215,7 @@ public class l005_cutType{
         return str.substring(si,si+len);
     }
 
-    public int minCut_memo(String str, int si, int ei, boolean[][] isPalindrome, int[] dp){
+    public int minCut_memo(String str, int si, int ei, boolean[][] isPalindrome, int[] dp){// function 
         if(isPalindrome[si][n-1]) return dp[si]=0
 
         if(dp[si]!=-1) return dp[si];
@@ -227,6 +227,22 @@ public class l005_cutType{
             }
         }
         return dp[si]=minAns;
+    }
+    public int minCut_dp(String str, int si, int ei, boolean[][] isPalindrome, int[] dp){// function 
+        for(int si=n-1;si>=0;si--){
+        if(isPalindrome[si][n-1]) {
+            dp[si]=0;
+            continue;
+            }
+        int minAns=(int)1e9;
+        for(int cut=si;cut<n;cut++){
+            if(isPalindrome[si][cut]){
+                minAns=Math.min(minAns,dp[cut+1]+1);
+            }
+        }
+        dp[si]=minAns;
+        }
+        return dp[SI];
     }
     public int minCut(String str){
         int n=str.length();
@@ -246,19 +262,36 @@ public class l005_cutType{
         return minCut_memo(str, 0, n, isPalindrome, dp);
     }
 
-    public int maxCoins(int[] nums, int si, int ei, int[][] dp) {
+    ///brust ballons
+    public int maxCoins(int[] nums, int si, int ei, int[][] dp){
         if(dp[si][ei]!=-1) return dp[si][ei];
-
-        int lval=si-1==-1?1:nums[si-1];
-        int rval=ei+1==nums.length?1:nums[ei+1];
-
-        for(int cut=si;sut<=ei;cut++){
-            int lans=maxCoins(nums,si,cut-1,dp);
-            int rans=maxCoins(nums,cut+1,ei,dp);
-
+        
+        int lval=si==0?1:nums[si-1];
+        int rval=ei==nums.length-1?1:nums[ei+1];
+        int maxAns=0;
+        for(int cut=si;cut<=ei;cut++){
+            int lans=(cut==si)?0:maxCoins(nums,si,cut-1,dp);
+            int rans=(cut==ei)?0:maxCoins(nums,cut+1,ei,dp);
             maxAns=Math.max(maxAns,lans+lval*nums[cut]*rval+rans);
         }
         return dp[si][ei]=maxAns;
+    }
+    // dp
+    public int maxCoins_DP(int[] nums, int SI, int EI, int[][] dp){
+        for(int gap=0;gap<nums.length;gap++){
+            for(int si=0,ei=gap;ei<nums.length;si++,ei++){
+                int lval=si==0?1:nums[si-1];
+                int rval=ei==nums.length-1?1:nums[ei+1];
+                int maxAns=0;
+                for(int cut=si;cut<=ei;cut++){
+                int lans=(cut==si)?0:dp[si][cut-1];//maxCoins(nums,si,cut-1,dp);
+                int rans=(cut==ei)?0:dp[cut+1][ei];//maxCoins(nums,cut+1,ei,dp);
+                maxAns=Math.max(maxAns,lans+lval*nums[cut]*rval+rans);
+        }
+        dp[si][ei]=maxAns;
+            }
+        }
+        return dp[SI][EI];
     }
     public int maxCoins(int[] nums) {
         int n = nums.length;
@@ -293,7 +326,61 @@ public class l005_cutType{
         
         return minScoreTriangulation(values,0,n-1,dp);
     }
-    
+    // boolean expression evalution
+    static int mod=1003;
+    public static class pairBoolean{
+        int falseWays=0;
+        int trueWays=0;
+        pairBoolean(int falseWays, int trueWays){
+            this.falseWays=falseWays;
+            this.trueWays=trueWays;
+        }
+    }
+
+    public static pairBoolean evaluate(pairBoolean left, pairBoolean right, char operator) {
+        int mod = 1003;
+        int TotalWays = ((left.trueWays + left.falseWays) % mod * (right.trueWays + right.falseWays) % mod) % mod;
+
+        pairBoolean ans = new pairBoolean(0, 0);
+        if (operator == '&') {
+            ans.trueWays = (left.trueWays * right.trueWays) % mod;
+            ans.falseWays = (TotalWays - ans.trueWays + mod) % mod;
+        } else if (operator == '|') {
+            ans.falseWays = (left.falseWays * right.falseWays) % mod;
+            ans.trueWays = (TotalWays - ans.falseWays + mod) % mod;
+        } else {
+            ans.trueWays = (left.falseWays * right.trueWays) % mod + (left.trueWays * right.falseWays) % mod;
+            ans.falseWays = (TotalWays - ans.trueWays + mod) % mod;
+        }
+
+        return ans;
+    }
+    public static pairBoolean booleanPare(String str, int si, int ei, pairBoolean[][] dp) {
+        if(si==ei){
+            char ch = str.charAt(si);
+            return new pairBoolean(ch=='F'?1:0,ch=='T'?1:0);
+        }
+        if(dp[si][ei]!=null) return dp[si][ei];
+
+        pairBoolean myAns = new pairBoolean(0,0);
+        for(int cut=si+1;cut<ei;cut+=2){
+            char operator = str.charAt(cut);
+            pairBoolean lans = booleanPare(str,si,cut-1,dp);
+            pairBoolean rans = booleanPare(str,cut+1,ei,dp);
+
+            pairBoolean recAns = evaluate(lans,rans,operator);
+            myAns.falseWays=(myAns.falseWays+recAns.falseWays)%mod;
+            myAns.trueWays=(myAns.trueWays+recAns.trueWays)%mod;
+        }
+        return dp[si][ei]=myAns;
+    }
+    static int countWays(int N, String S) {
+        pairBoolean[][] dp = new pairBoolean[N][N];
+        pairBoolean ans = booleanPare(S,0,N-1,dp);
+        return ans.trueWays;
+    }
+
+
     public static void main(String[] args){
         matrixMultiplication();
         //minMaxEvaluation();
