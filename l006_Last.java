@@ -29,4 +29,43 @@ public class l006_Last{
         }
         return dp[n-1]-1;
     }
+
+
+    //
+    public int[][] minChanges(String s, int k){
+        int n = s.length();
+        int[][] minChangesDP = new int[n][n];
+        for(int gap =1;gap<n;gap++){
+            for(int i=0,j=gap;j<n;i++,j++){
+                if(gap==1) minChangesDP[i][j] = s.charAt(i)==s.charAt(j)?0:1;
+                else minChangesDP[i][j] = s.charAt(i)==s.charAt(j)?minChangesDP[i+1][j-1]:minChangesDP[i+1][j-1]+1;
+            }
+        }
+        return minChangesDP;
+    }
+    public int palindromePartition(String s, int k, int si, int[][] minChangesDP, int[][] dp){
+        int n = s.length();
+        if(n-si<=k) return dp[si][k] = n-si==k?0:(int)1e9;
+
+        if(k==1) return dp[si][k] = minChangesDP[si][n-1];
+
+        if(dp[si][k]!=-1) return dp[si][k];
+
+        int minAns = (int) 1e9;
+        for(int cut = si; cut<n-1;cut++){
+            int minChanges = minChangesDP[si][cut];
+            int minChangesRec = palindromePartition(s,k-1,cut+1,minChangesDP,dp);
+            if(minChangesRec!=(int)1e9){
+                minAns= Math.min(minAns,minChanges+minChangesRec);
+            }
+        }
+        return dp[si][k]=minAns;
+    }
+    public int palindromePartition(String s, int k) {
+        int n = s.length();
+         int[][] minChangesDP = minChanges(s,k);
+         int[][] dp = new int[n][k+1];
+         for(int[] d:dp) Arrays.fill(d,-1);
+         return palindromePartition(s,k,0,minChangesDP,dp);
+    }
 }
