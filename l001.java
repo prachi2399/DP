@@ -322,7 +322,6 @@ public class l001{
             count+=printFriendsPairing(rstr,ans+ch+str.charAt(i)+" ");
         }
         return count;
-
     }
 
     public static long countFriendsPairings(int n) 
@@ -663,6 +662,7 @@ dp[i]=count;
         int partOfGroup=numWaysToDivideinK(n-1,k,dp)*k;
 
         return dp[n][k] = uniqueGroup + partOfGroup;
+        
     }
 
     public int numWaysToDivideinK(int n, int k){
