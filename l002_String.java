@@ -86,7 +86,7 @@ public class l002_String{
             }
         }
         return dp[N][M];
-}
+    }
 
     public int maxUncrossedLines(int[] A, int[] B) {
     int N=A.length;
@@ -119,6 +119,24 @@ public class l002_String{
         return numDistinct_DP(s,t,n,m,dp);
     }
 
+    // longest common subsequence
+    public int longestCommonSubsequence(String s, String t, int n, int m, int[][] dp) {
+        if(n==0||m==0) return dp[n][m]=0;
+        if(dp[n][m]!=-1) return dp[n][m];
+        
+        if(s.charAt(n-1)==t.charAt(m-1)) dp[n][m]=1+longestCommonSubsequence(s,t,n-1,m-1,dp);
+        else dp[n][m]=Math.max(longestCommonSubsequence(s,t,n-1,m,dp),longestCommonSubsequence(s,t,n,m-1,dp));
+        return dp[n][m];
+    }
+    
+    public int longestCommonSubsequence(String s, String t) {
+        int n = s.length();
+        int m = t.length();
+        int[][] dp =new int[n+1][m+1];
+        for(int[] d : dp) Arrays.fill(d,-1);
+        return longestCommonSubsequence(s,t,n,m,dp);
+    }
+    
     // leetode 1458
     public int maxDotProduct(int[] nums1, int[] nums2) {
         int n=nums1.length;
@@ -132,7 +150,6 @@ public class l002_String{
     }
     
     public int maxDotProduct_Memo(int[] nums1, int[] nums2, int n, int m, int[][] dp){
-        
         if(n==0||m==0){
             return dp[n][m]=-(int)1e7;
         }
